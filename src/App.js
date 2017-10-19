@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import Post from './components/Post'
+import CategoryRoute from './components/CategoryRoute'
 import { connect } from 'react-redux'
-import { fetchCategories, fetchPosts, sortPosts } from './actions'
+import { fetchCategories, fetchPosts, sortPosts, filterPosts } from './actions'
 import { sort } from './helpers'
+import { Route, Link } from 'react-router-dom'
 
 class App extends Component {
 
@@ -20,7 +22,18 @@ class App extends Component {
     const { categories } = this.props
     if(categories && categories.length) {
       const categoriesLinks = categories.map( category => {
-        return(<div className='category' key={category.path}>{category.name}</div>)
+        return(
+          <Link to={`/${category.path}`}>
+          <div className='category'>
+            <div className='category-logo'>
+              <img src={require(`./img/${category.path}.png`)}/>
+            </div>
+            <div className='category-name' key={category.path}>
+              {category.name}
+            </div>
+          </div>
+          </Link>
+          )
       })
 
       return categoriesLinks
@@ -43,8 +56,6 @@ class App extends Component {
     const value = e.target.value
     const filters = value.split('_')
 
-    console.log(filters)
-
     if (filters[0] === 'highest') {
       this.props.sortPosts({
         parameter: filters[1],
@@ -66,7 +77,10 @@ class App extends Component {
           <div className='main-content'>
             <div className='nav-bar'>
             <div className='feed'>
-              All categories
+              <Route exact path='/' component={CategoryRoute}/>
+              <Route path='/react' render={()=> <CategoryRoute filter='react'/>}/>
+              <Route path='/redux' render={() => <CategoryRoute filter='redux'/>}/>
+              <Route path='/udacity' render={() => <CategoryRoute filter='udacity'/>}/>
             </div>
             <div className='sort'>
               <select onChange={(e) => this.handleSort(e)}>
@@ -91,18 +105,29 @@ class App extends Component {
 
 const mapStateToProps = (state, props) => {
   
+  const filter = state.ui.filter
   const sorting = state.ui.sorting
+  
+  const postsArray = Object.entries(state.posts).map( post => post[1])
 
   if (sorting) {
-    const postsArray = Object.entries(state.posts).map( post => post[1])
-    const sorted = sort(postsArray, sorting.parameter, sorting.lowestFirst)
-  
-    return {
-      categories: state.categories,
-      posts: sorted
+    if (filter) {
+      const filtered = postsArray.filter( post => {
+        return post.category === filter
+      })
+      const sorted = sort(filtered, sorting.parameter, sorting.lowestFirst)
+      return {
+        categories: state.categories,
+        posts: sorted
+      }
+    } else {
+      const sorted = sort(postsArray, sorting.parameter, sorting.lowestFirst)
+      return {
+        categories: state.categories,
+        posts: sorted
+      }
     }
   } 
-
   return {}
   // TODO: Ask instructor if there's another way to handle this
 }
@@ -113,4 +138,4 @@ const mapDispatchToProps = dispatch => ({
   sortPosts: (sorting) => dispatch(sortPosts(sorting))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps, null, {pure:false})(App);

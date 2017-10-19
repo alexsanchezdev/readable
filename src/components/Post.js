@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import * as ReadableAPI from '../ReadableAPI'
 import '../styles/Post.css'
 import ArrowDown from 'react-icons/lib/md/keyboard-arrow-down'
 import ArrowUp from 'react-icons/lib/md/keyboard-arrow-up'

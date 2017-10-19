@@ -2,7 +2,8 @@ import {
     LOAD_CATEGORIES,
     LOAD_POSTS,
     UPDATE_POST,
-    SORT_POSTS
+    SORT_POSTS,
+    FILTER_POSTS
 } from '../actions'
 import { combineReducers } from 'redux'
 
@@ -38,13 +39,18 @@ const posts = (state = {}, action) => {
 }
 
 const ui = (state = {}, action) => {
-    const { sorting } = action
+    const { sorting, filter } = action
 
     switch (action.type) {
         case SORT_POSTS:
             return {
                 ...state,
                 sorting
+            }
+        case FILTER_POSTS:
+            return {
+                ...state,
+                filter
             }
         default:
             return state

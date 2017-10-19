@@ -41,9 +41,26 @@
 }
 
 .category {
+  margin-left: 16px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.category-logo img{
+  margin-top: 8px;
+  height: 24px;
+  width: 24px;
+}
+
+.category-name {
   margin: 16px;
   font-size: 24px;
   font-weight: 400;
+}
+
+.link {
+  text-decoration: none;
 }
 
 

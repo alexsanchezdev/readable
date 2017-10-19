@@ -9,7 +9,7 @@ export const timeAgo = (timestamp) => {
         return `${Math.trunc(timeInSeconds)} seconds ago`
     } if (timeInSeconds >= 60 && timeInSeconds < 3600) {
         return `${Math.trunc(timeInMinutes)} minutes ago`
-    } if (timeInMinutes >= 60 && timeInMinutes < 3600) {
+    } if (timeInMinutes >= 60 && timeInMinutes < 1440) {
         return `${Math.trunc(timeInHours)} hours ago`
     } if (timeInHours >= 24) {
         return `${Math.trunc(timeInDays)} days ago`

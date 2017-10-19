@@ -4,6 +4,7 @@ export const LOAD_CATEGORIES = 'LOAD_CATEGORIES'
 export const LOAD_POSTS = 'LOAD_POSTS'
 export const UPDATE_POST = 'UPDATE_POST'
 export const SORT_POSTS = 'SORT_POSTS'
+export const FILTER_POSTS = 'FILTER_POSTS'
 
 export const loadCategories = (categories) => {
     return {
@@ -30,6 +31,13 @@ export const sortPosts = (sorting) => {
     return {
         type: SORT_POSTS,
         sorting
+    }
+}
+
+export const filterPosts = (filter) => {
+    return {
+        type: FILTER_POSTS,
+        filter
     }
 }
 
