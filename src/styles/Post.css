@@ -1,0 +1,66 @@
+.main-content {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .post-container {
+    display: flex;
+    background: white;
+    margin-top: 16px;
+    border-radius: 4px;
+    min-height: 128px;
+    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+  }
+  
+  .vote-container {
+    min-width: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .vote-container button {
+    width: 100%;
+    flex: 2;
+    background: 0;
+    border: 0;
+    outline: none;
+  }
+  
+  .vote-container button:hover {
+    transform: scale(1.3, 1.3);
+    cursor: pointer;
+    
+  }
+  
+  #arrow-up:hover {
+    color: #00C853;
+  }
+  
+  #arrow-down:hover {
+    color: #D50000;
+  }
+  
+  .vote-container p {
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+  }
+  
+  .post-title {
+    padding: 16px 16px 16px 0;
+    font-weight: 900;
+    font-size: 20px;
+  }
+  
+  .post-body {
+    padding: 0 16px 0 0;
+  }
+  
+  .post-info {
+    padding: 16px 16px 16px 0;
+    font-size: 12px;
+  }
