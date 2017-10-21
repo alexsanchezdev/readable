@@ -1,19 +1,32 @@
 import React, { Component } from 'react';
 import './App.css';
 import Post from './components/Post'
-import CategoryRoute from './components/CategoryRoute'
+import NavBar from './components/NavBar'
 import { connect } from 'react-redux'
-import { fetchCategories, fetchPosts, sortPosts, filterPosts } from './actions'
+import { fetchCategories, fetchPosts, sortPosts} from './actions'
 import { sort } from './helpers'
-import { Route, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import Modal from 'react-modal'
+import CreateEdit from './components/CreateEdit'
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
 class App extends Component {
 
+  state = {
+    modalIsOpen: false
+  }
+
   componentDidMount() {
-    this.props.sortPosts({
-      parameter: 'voteScore',
-      lowestFirst: false
-    })
     this.props.loadCategories()
     this.props.loadPosts()
   }
@@ -23,12 +36,12 @@ class App extends Component {
     if(categories && categories.length) {
       const categoriesLinks = categories.map( category => {
         return(
-          <Link to={`/${category.path}`}>
+          <Link key={category.path} to={`/${category.path}`} className='link'>
           <div className='category'>
             <div className='category-logo'>
-              <img src={require(`./img/${category.path}.png`)}/>
+              <img src={require(`./img/${category.path}.png`)} alt={category.name}/>
             </div>
-            <div className='category-name' key={category.path}>
+            <div className='category-name'>
               {category.name}
             </div>
           </div>
@@ -44,30 +57,25 @@ class App extends Component {
     const { posts } = this.props
     if (posts) {
       const postsViews = posts.map( post => {
+        if(post.deleted) {
+          return null
+        }
         return(<Post key={post.id} data={post}/>)
       })
 
+      if (postsViews.length < 1) {
+        return (<p>No posts in this category.</p>)
+      }
       return postsViews
     }
   }
 
-  handleSort = (e) => {
+  openModal = () => {
+    this.setState({ modalIsOpen: true })
+  }
 
-    const value = e.target.value
-    const filters = value.split('_')
-
-    if (filters[0] === 'highest') {
-      this.props.sortPosts({
-        parameter: filters[1],
-        lowestFirst: false
-      })
-    } else {
-      this.props.sortPosts({
-        parameter: filters[1],
-        lowestFirst: true
-      })
-    }
-    
+  closeModal = () => {
+    this.setState({ modalIsOpen: false })
   }
 
   render() {
@@ -75,26 +83,15 @@ class App extends Component {
       <div className='app'>
         <div className='wrapper'>
           <div className='main-content'>
-            <div className='nav-bar'>
-            <div className='feed'>
-              <Route exact path='/' component={CategoryRoute}/>
-              <Route path='/react' render={()=> <CategoryRoute filter='react'/>}/>
-              <Route path='/redux' render={() => <CategoryRoute filter='redux'/>}/>
-              <Route path='/udacity' render={() => <CategoryRoute filter='udacity'/>}/>
-            </div>
-            <div className='sort'>
-              <select onChange={(e) => this.handleSort(e)}>
-                <option value='highest_voteScore' name='voteScore'>Sort by score (highest first)</option>
-                <option value='lowest_voteScore' name='voteScore'>Sort by score (lowest first)</option>
-                <option value='highest_timestamp' name='timestamp'>Sort by time (newest first)</option>
-                <option value='lowest_timestamp' name='timestamp'>Sort by time (oldest first)</option>
-              </select>
-            </div>
-            </div>
+            <NavBar />
             {this.renderPosts()}
+            <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} style={customStyles}>
+              <CreateEdit close={this.closeModal}/>
+            </Modal>
           </div>
           <div className='sidebar-navigation'>
-            <button>ADD NEW POST</button>
+            <button onClick={this.openModal}>ADD NEW POST</button>
+            <p/>
             {this.renderCategories()}
           </div>
         </div>

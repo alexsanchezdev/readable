@@ -2,9 +2,12 @@ import * as ReadableAPI from '../ReadableAPI'
 
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES'
 export const LOAD_POSTS = 'LOAD_POSTS'
-export const UPDATE_POST = 'UPDATE_POST'
+export const UPDATE_SCORE = 'UPDATE_SCORE'
 export const SORT_POSTS = 'SORT_POSTS'
 export const FILTER_POSTS = 'FILTER_POSTS'
+export const CREATE_POST = 'CREATE_POST'
+export const DELETE_POST = 'DELETE_POST'
+export const EDIT_POST = 'EDIT_POST'
 
 export const loadCategories = (categories) => {
     return {
@@ -22,7 +25,7 @@ export const loadPosts = (posts) => {
 
 export const updateScore = (post) => {
     return {
-        type: UPDATE_POST,
+        type: UPDATE_SCORE,
         post
     }
 }
@@ -40,6 +43,28 @@ export const filterPosts = (filter) => {
         filter
     }
 }
+
+export const createPost = (post) => {
+    return {
+        type: CREATE_POST,
+        post
+    }
+}
+
+export const deletePost = (post) => {
+    return {
+        type: DELETE_POST,
+        post
+    }
+}
+
+export const editPost = (post) => {
+    return {
+        type: EDIT_POST,
+        post
+    }
+}
+
 
 export const fetchCategories = () => dispatch => {
     ReadableAPI.getAllCategories().then( res => {
@@ -63,5 +88,23 @@ export const fetchPosts = () => dispatch => {
 export const votePost = (vote, id) => dispatch => {
     ReadableAPI.votePost(vote, id).then( res => {
         dispatch(updateScore(res))
+    })
+}
+
+export const uploadPost = (post) => dispatch => {
+    ReadableAPI.createNewPost(post).then( res => {
+        dispatch(createPost(res))
+    }).then( () => dispatch(fetchPosts()))
+}
+
+export const removePost = (id) => dispatch => {
+    ReadableAPI.deletePost(id).then( res => {
+        dispatch(deletePost(res))
+    })
+}
+
+export const updatePost = (post) => dispatch => {
+    ReadableAPI.editPost(post).then( res => {
+        dispatch(editPost(res))
     })
 }

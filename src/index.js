@@ -17,8 +17,8 @@ const store = createStore(reducer, compose(
 ReactDOM.render(
     
     <Provider store={store}>
-    <BrowserRouter>
-        <App />
+        <BrowserRouter>
+            <App />
         </BrowserRouter>
     </Provider>
     , document.getElementById('root'));
