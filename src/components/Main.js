@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Route, Switch } from 'react-router-dom'
 import CategoryRoute from './CategoryRoute'
+import Feed from './Feed'
 import { connect } from 'react-redux'
 import { sortPosts } from '../actions'
 
-class NavBar extends Component {
+class Main extends Component {
 
     componentDidMount() {
         this.props.sortPosts({
@@ -14,38 +15,18 @@ class NavBar extends Component {
         })
     }
 
-    handleSort = (e) => {
-        
-            const value = e.target.value
-            const filters = value.split('_')
-        
-            if (filters[0] === 'highest') {
-              this.props.sortPosts({
-                parameter: filters[1],
-                lowestFirst: false
-              })
-            } else {
-              this.props.sortPosts({
-                parameter: filters[1],
-                lowestFirst: true
-              })
-            }
-            
-          }
-
     render() {
         return(
+            <div>
             <div className='nav-bar'>
-                <div className='feed'>
-                    <Switch>
-                        <div>
+                <div className='routes'>
+                     <Switch>
                         <Route exact path='/' render={() =><CategoryRoute />}/>
-                        <Route path='/react' render={()=> <CategoryRoute filter='react'/>}/>
-                        <Route path='/redux' render={() => <CategoryRoute filter='redux'/>}/>
-                        <Route path='/udacity' render={() => <CategoryRoute filter='udacity'/>}/>
-                        </div>
+                        <Route exact path='/react' render={()=> <CategoryRoute filter='react'/>}/>
+                        <Route exact path='/redux' render={() => <CategoryRoute filter='redux'/>}/>
+                        <Route exact path='/udacity' render={() => <CategoryRoute filter='udacity'/>}/>
                     </Switch>
-                </div> 
+                </div>
                 <div className='sort'>
                     <select onChange={(e) => this.handleSort(e)}>
                         <option value='highest_voteScore' name='voteScore'>Sort by score (highest first)</option>
@@ -54,14 +35,38 @@ class NavBar extends Component {
                         <option value='lowest_timestamp' name='timestamp'>Sort by time (oldest first)</option>
                     </select>
                 </div>
-            </div> 
+            </div>
+            <div className='feed'>
+                <Feed />
+            </div>
+            </div>
         )
         
     }
+
+    handleSort = (e) => {
+        
+        const value = e.target.value
+        const sorts = value.split('_')
+        
+        if (sorts[0] === 'highest') {
+            this.props.sortPosts({
+                parameter: sorts[1],
+                lowestFirst: false
+            })
+        } else {
+            this.props.sortPosts({
+                parameter: sorts[1],
+                lowestFirst: true
+            })
+        }  
+    }
+
+    
 }
 
 const mapDispatchToProps = dispatch => ({
     sortPosts: (sorting) => dispatch(sortPosts(sorting))
 })
   
-export default connect(null, mapDispatchToProps, null, {pure:false})(NavBar);
+export default connect(null, mapDispatchToProps, null, {pure:false})(Main);

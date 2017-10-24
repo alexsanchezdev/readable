@@ -103,8 +103,8 @@ export const removePost = (id) => dispatch => {
     })
 }
 
-export const updatePost = (post) => dispatch => {
-    ReadableAPI.editPost(post).then( res => {
+export const updatePost = (id, post) => dispatch => {
+    ReadableAPI.editPost(id, post).then( res => {
         dispatch(editPost(res))
-    })
+    }).then( () => dispatch(fetchPosts()))
 }

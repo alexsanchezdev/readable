@@ -10,10 +10,29 @@ import { votePost, removePost, updatePost } from '../actions'
 import CreateEdit from './CreateEdit'
 import Modal from 'react-modal'
 
+const customStyles = {
+    content : {
+      top                   : '50%',
+      left                  : '50%',
+      right                 : 'auto',
+      bottom                : 'auto',
+      marginRight           : '-50%',
+      transform             : 'translate(-50%, -50%)'
+    }
+}
+
 class Post extends Component {
 
     state = {
         modalIsOpen: false
+    }
+
+    openModal = () => {
+        this.setState({ modalIsOpen: true })
+    }
+
+    closeModal = () => {
+        this.setState({ modalIsOpen: false })
     }
 
     votePost = (vote) => {
@@ -44,10 +63,10 @@ class Post extends Component {
                             {`${this.props.data.author} • ${timeAgo(this.props.data.timestamp)} • ${this.props.data.commentCount} comments`}
                         </div>
                         <div id='edit-delete-icons'>
-                            <Edit id='edit' size={16}/>
+                            <Edit id='edit' size={16} onClick={this.openModal}/>
                             <Delete id='delete' size={16} onClick={this.deletePost}/>
                             <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} style={customStyles}>
-                                <CreateEdit close={this.closeModal}/>
+                                <CreateEdit close={this.closeModal} data={this.props.data} isEditing={true}/>
                             </Modal>
                         </div>
                     </div>
@@ -60,8 +79,7 @@ class Post extends Component {
 
 const mapDispatchToProps = dispatch => ({
     votePost: (vote, id) => dispatch(votePost(vote, id)),
-    deletePost: (id) => dispatch(removePost(id)),
-    editPost: (post) => dispatch(editPost(post))
+    deletePost: (id) => dispatch(removePost(id))
   })
 
 export default connect(null, mapDispatchToProps)(Post)

@@ -35,13 +35,18 @@
   box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
 }
 
+.main-content {
+  display: flex;
+  flex-direction: column;
+}
+
 .nav-bar {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
 }
 
-.feed {
+.routes {
   font-size: 36px;
   margin-top: 32px;
 }

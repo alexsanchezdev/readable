@@ -6,13 +6,15 @@ import { filterPosts } from '../actions'
 
 class CategoryRoute extends Component {
 
-    componentDidMount() {
+    componentWillUpdate() {
         const filter = this.props.filter
         this.props.filterPosts(filter)
     }
 
     render() {
         const filter = this.props.filter
+        this.props.filterPosts(filter)
+
         if (filter) {
             return(
                 <div><Link to='/' className='link'>/all</Link>/{filter}</div>
@@ -27,7 +29,7 @@ class CategoryRoute extends Component {
 }
 
 CategoryRoute.defaultProps = {
-    filter: null
+    filter: ''
 }
 
 
