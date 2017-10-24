@@ -3,16 +3,23 @@ import { sort } from '../helpers'
 import { connect } from 'react-redux'
 import Post from './Post'
 import { Route, Switch } from 'react-router-dom'
+import PostDetails from './PostDetails'
+
 
 class Feed extends Component {
+
+
     render() {
+        const { showDetails } = this.props
+
         return(
           <div>
-            <div>{this.renderPosts()}</div>
+            {showDetails ? null : <div>{this.renderPosts()}</div>}
             <div>
             <Switch>
               {this.renderPostsRoutes()}
-            </Switch></div>
+            </Switch>
+            </div>
           </div>
         )
     }
@@ -27,13 +34,9 @@ renderPostsRoutes = () => {
       }
       
       return (
-          <Route exact path={`${post.category}/${post.id}`} render={()=> `Hello from ${post.category}/${post.id}`}/>
+          <Route exact path={`/${post.category}/${post.id}`} key={post.id} render={()=> <PostDetails data={post}/>}/>
       )
     })
-
-    if (postsViews.length < 1) {
-      return (<p>No posts in this category.</p>)
-    }
     return postsViews
   }
 }
@@ -47,7 +50,6 @@ renderPosts = () => {
         return null
       }
       
-      console.log(`${post.category}/${post.id}`)
       return (
           <Post key={post.id} data={post}/>
       )
@@ -56,14 +58,12 @@ renderPosts = () => {
     if (postsViews.length < 1) {
       return (<p>No posts in this category.</p>)
     }
+
     return postsViews
   }
 }
 
 }
-
-
-
 
 const mapStateToProps = (state, props) => {
     
@@ -80,13 +80,15 @@ const mapStateToProps = (state, props) => {
         const sorted = sort(filtered, sorting.parameter, sorting.lowestFirst)
         return {
           categories: state.categories,
-          posts: sorted
+          posts: sorted,
+          showDetails: state.ui.showDetails
         }
       } else {
         const sorted = sort(postsArray, sorting.parameter, sorting.lowestFirst)
         return {
           categories: state.categories,
-          posts: sorted
+          posts: sorted,
+          showDetails: state.ui.showDetails
         }
       }
     } 

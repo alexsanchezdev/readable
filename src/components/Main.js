@@ -18,50 +18,19 @@ class Main extends Component {
     render() {
         return(
             <div>
-            <div className='nav-bar'>
-                <div className='routes'>
-                     <Switch>
+                <Switch>
                         <Route exact path='/' render={() =><CategoryRoute />}/>
                         <Route exact path='/react' render={()=> <CategoryRoute filter='react'/>}/>
                         <Route exact path='/redux' render={() => <CategoryRoute filter='redux'/>}/>
                         <Route exact path='/udacity' render={() => <CategoryRoute filter='udacity'/>}/>
-                    </Switch>
+                </Switch>
+                <div className='feed'>
+                    <Feed />
                 </div>
-                <div className='sort'>
-                    <select onChange={(e) => this.handleSort(e)}>
-                        <option value='highest_voteScore' name='voteScore'>Sort by score (highest first)</option>
-                        <option value='lowest_voteScore' name='voteScore'>Sort by score (lowest first)</option>
-                        <option value='highest_timestamp' name='timestamp'>Sort by time (newest first)</option>
-                        <option value='lowest_timestamp' name='timestamp'>Sort by time (oldest first)</option>
-                    </select>
-                </div>
-            </div>
-            <div className='feed'>
-                <Feed />
-            </div>
             </div>
         )
         
     }
-
-    handleSort = (e) => {
-        
-        const value = e.target.value
-        const sorts = value.split('_')
-        
-        if (sorts[0] === 'highest') {
-            this.props.sortPosts({
-                parameter: sorts[1],
-                lowestFirst: false
-            })
-        } else {
-            this.props.sortPosts({
-                parameter: sorts[1],
-                lowestFirst: true
-            })
-        }  
-    }
-
     
 }
 

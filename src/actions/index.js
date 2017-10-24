@@ -2,12 +2,14 @@ import * as ReadableAPI from '../ReadableAPI'
 
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES'
 export const LOAD_POSTS = 'LOAD_POSTS'
+export const LOAD_COMMENTS = 'LOAD_COMMENTS'
 export const UPDATE_SCORE = 'UPDATE_SCORE'
 export const SORT_POSTS = 'SORT_POSTS'
 export const FILTER_POSTS = 'FILTER_POSTS'
 export const CREATE_POST = 'CREATE_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const EDIT_POST = 'EDIT_POST'
+export const SHOW_POST_DETAILS = 'SHOW_POST_DETAILS'
 
 export const loadCategories = (categories) => {
     return {
@@ -20,6 +22,13 @@ export const loadPosts = (posts) => {
     return {
         type: LOAD_POSTS,
         posts
+    }
+}
+
+export const loadComments = (comments) => {
+    return {
+        type:LOAD_COMMENTS,
+        comments
     }
 }
 
@@ -65,6 +74,13 @@ export const editPost = (post) => {
     }
 }
 
+export const showPostDetails = (id) => {
+    return {
+        type: SHOW_POST_DETAILS,
+        id
+    }
+}
+
 
 export const fetchCategories = () => dispatch => {
     ReadableAPI.getAllCategories().then( res => {
@@ -82,6 +98,17 @@ export const fetchPosts = () => dispatch => {
         }, {})
 
         dispatch(loadPosts(obj))
+    })
+}
+
+export const fetchComments = () => dispatch => {
+    ReadableAPI.getAllComments().then( res => {
+        const obj = res.reduce((acc, cur) => {
+            acc[cur.id] = cur
+            return acc
+        }, {})
+
+        dispatch(loadComments(obj))
     })
 }
 

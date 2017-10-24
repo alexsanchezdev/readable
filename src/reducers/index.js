@@ -1,12 +1,14 @@
 import {
     LOAD_CATEGORIES,
     LOAD_POSTS,
+    LOAD_COMMENTS,
     UPDATE_SCORE,
     SORT_POSTS,
     FILTER_POSTS,
     CREATE_POST,
     DELETE_POST,
-    EDIT_POST
+    EDIT_POST,
+    SHOW_POST_DETAILS
 } from '../actions'
 import { combineReducers } from 'redux'
 
@@ -62,8 +64,19 @@ const posts = (state = {}, action) => {
     }
 }
 
+const comments = (state = {}, action) => {
+    const { comments } = action
+    
+    switch (action.type) {
+        case LOAD_COMMENTS:
+            return Object.assign(...state, comments)
+        default:
+            return state
+    }
+}
+
 const ui = (state = {}, action) => {
-    const { sorting, filter } = action
+    const { sorting, filter, id } = action
 
     switch (action.type) {
         case SORT_POSTS:
@@ -76,11 +89,16 @@ const ui = (state = {}, action) => {
                 ...state,
                 filter
             }
+        case SHOW_POST_DETAILS:
+            return {
+                ...state,
+                showDetails: id
+            }
         default:
             return state
     }
 }
 
 export default combineReducers({
-    categories, posts, ui
+    categories, posts, comments, ui
 })

@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import Post from './components/Post'
 import Main from './components/Main'
 import Sidebar from './components/Sidebar'
 import { connect } from 'react-redux'
-import { fetchCategories, fetchPosts, sortPosts} from './actions'
-import { sort } from './helpers'
-import { Link, Route } from 'react-router-dom'
+import { fetchCategories, fetchPosts, fetchComments, sortPosts} from './actions'
 import Modal from 'react-modal'
 import CreateEdit from './components/CreateEdit'
 
@@ -29,6 +26,7 @@ class App extends Component {
 
   componentDidMount() {
     this.props.loadPosts()
+    this.props.loadComments()
     this.props.loadCategories()
   }
 
@@ -64,6 +62,7 @@ class App extends Component {
 const mapDispatchToProps = dispatch => ({
   loadCategories: () => dispatch(fetchCategories()),
   loadPosts: () => dispatch(fetchPosts()),
+  loadComments: () => dispatch(fetchComments()),
   sortPosts: (sorting) => dispatch(sortPosts(sorting))
 })
 
