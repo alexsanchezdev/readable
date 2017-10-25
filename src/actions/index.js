@@ -25,10 +25,11 @@ export const loadPosts = (posts) => {
     }
 }
 
-export const loadComments = (comments) => {
+export const loadComments = (id, comments) => {
     return {
         type:LOAD_COMMENTS,
-        comments
+        comments,
+        id
     }
 }
 
@@ -101,14 +102,14 @@ export const fetchPosts = () => dispatch => {
     })
 }
 
-export const fetchComments = () => dispatch => {
-    ReadableAPI.getAllComments().then( res => {
+export const fetchComments = (id) => dispatch => {
+    ReadableAPI.getAllComments(id).then( res => {
         const obj = res.reduce((acc, cur) => {
             acc[cur.id] = cur
             return acc
         }, {})
 
-        dispatch(loadComments(obj))
+        dispatch(loadComments(id, obj))
     })
 }
 

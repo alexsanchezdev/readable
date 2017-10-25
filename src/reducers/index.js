@@ -65,11 +65,25 @@ const posts = (state = {}, action) => {
 }
 
 const comments = (state = {}, action) => {
-    const { comments } = action
+    const { comments, id } = action
     
     switch (action.type) {
         case LOAD_COMMENTS:
-            return Object.assign(...state, comments)
+            if (id) {
+                if (Object.keys(state).length < 1) {
+                    return Object.assign(state, {
+                        [id]: comments
+                    })
+                } else {
+                    return {
+                        ...state,
+                        [id]: comments
+                    }
+                }
+            }
+            
+            return state
+            
         default:
             return state
     }
@@ -82,12 +96,13 @@ const ui = (state = {}, action) => {
         case SORT_POSTS:
             return {
                 ...state,
-                sorting
+                postSorting: sorting
             }
         case FILTER_POSTS:
+            console.log(state.posts)
             return {
                 ...state,
-                filter
+                postFilter: filter
             }
         case SHOW_POST_DETAILS:
             return {

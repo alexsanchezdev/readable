@@ -67,8 +67,8 @@ renderPosts = () => {
 
 const mapStateToProps = (state, props) => {
     
-    const filter = state.ui.filter
-    const sorting = state.ui.sorting
+    const filter = state.ui.postFilter
+    const sorting = state.ui.postSorting
     
     const postsArray = Object.entries(state.posts).map( post => post[1])
   

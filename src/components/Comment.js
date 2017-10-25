@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
-import '../styles/Post.css'
+import '../styles/Comment.css'
 import ArrowDown from 'react-icons/lib/md/keyboard-arrow-down'
 import ArrowUp from 'react-icons/lib/md/keyboard-arrow-up'
 import Edit from 'react-icons/lib/md/edit'
 import Delete from 'react-icons/lib/md/delete'
 import { timeAgo } from '../helpers'
 import { connect } from 'react-redux'
-import { votePost, removePost, showPostDetails } from '../actions'
+import { votePost, removePost } from '../actions'
 import CreateEdit from './CreateEdit'
 import Modal from 'react-modal'
-import { Link } from 'react-router-dom'
 
 const customStyles = {
     content : {
@@ -22,7 +21,7 @@ const customStyles = {
     }
 }
 
-class Post extends Component {
+class Comment extends Component {
 
     state = {
         modalIsOpen: false
@@ -36,50 +35,44 @@ class Post extends Component {
         this.setState({ modalIsOpen: false })
     }
 
-    votePost = (vote) => {
-        this.props.votePost(vote, this.props.data.id)
-    }
+    // votePost = (vote) => {
+    //     this.props.votePost(vote, this.props.data.id)
+    // }
 
-    deletePost = () => {
-        this.props.deletePost(this.props.data.id)
-    }
+    // deletePost = () => {
+    //     this.props.deletePost(this.props.data.id)
+    // }
 
-    showDetails = (id) => {
-        const { showDetails } = this.props
+    // showDetails = (id) => {
+    //     const { showDetails } = this.props
 
-        if (showDetails) {
-            return
-        } else {
-            this.props.showPostDetails(id)
-        }
-    }
+    //     if (showDetails) {
+    //         return
+    //     } else {
+    //         this.props.showPostDetails(id)
+    //     }
+    // }
 
     render() {
 
-        const { id, voteScore, title, body, author, timestamp, commentCount, category } = this.props.data
+        const { id, voteScore, body, author, timestamp } = this.props.data
         return(
             
-            <div className='post-container'>
-                <div className='vote-container'>
-                    <button id='arrow-up' onClick={() => { this.votePost('upVote') }}><ArrowUp size={36} /></button>
+            <div className='comment-container'>
+                <div className='comment-vote-container'>
+                    <button id='arrow-up' onClick={() => { this.votePost('upVote') }}><ArrowUp size={24} /></button>
                     <p>{voteScore}</p>
-                    <button id='arrow-down' onClick={() => { this.votePost('downVote') }}><ArrowDown size={36}/></button>
+                    <button id='arrow-down' onClick={() => { this.votePost('downVote') }}><ArrowDown size={24}/></button>
                 </div>
-                <div className='details-container'>
-                    <Link to={`/${category}/${id}`} className='no-link' onClick={() => this.showDetails(id)}>
-                    <div className='post-title'>
-                        {title}
+                <div className='comment-details-container'>
+                    <div className='comment-title'>
+                        <div id='author-title'>{author}</div>
+                        <div id='timestamp-title'>{timeAgo(timestamp)}</div>
                     </div>
-                    <div className='post-body'>
+                    <div className='comment-body'>
                         {body}
                     </div>
-                    </Link>
-                    <div className='post-info'>
-                        <div>
-                            {`${author} • ${timeAgo(timestamp)} • ${commentCount} comments`}
-                        </div>
-                        
-                        
+                    <div className='comment-info'>
                         <div id='edit-delete-icons'>
                             <Edit id='edit' size={16} onClick={this.openModal}/>
                             <Delete id='delete' size={16} onClick={this.deletePost}/>
@@ -95,14 +88,9 @@ class Post extends Component {
     }
 }
 
-const mapStateToProps = (state, props) => ({
-    showDetails: state.ui.showDetails
-})  
-
 const mapDispatchToProps = dispatch => ({
     votePost: (vote, id) => dispatch(votePost(vote, id)),
     deletePost: (id) => dispatch(removePost(id)),
-    showPostDetails: (id) => dispatch(showPostDetails(id)),
   })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Post)
+export default connect(null, mapDispatchToProps)(Comment)
