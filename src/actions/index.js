@@ -5,6 +5,7 @@ export const LOAD_POSTS = 'LOAD_POSTS'
 export const LOAD_COMMENTS = 'LOAD_COMMENTS'
 export const UPDATE_SCORE = 'UPDATE_SCORE'
 export const SORT_POSTS = 'SORT_POSTS'
+export const SORT_COMMENTS = 'SORT_COMMENTS'
 export const FILTER_POSTS = 'FILTER_POSTS'
 export const CREATE_POST = 'CREATE_POST'
 export const DELETE_POST = 'DELETE_POST'
@@ -43,6 +44,13 @@ export const updateScore = (post) => {
 export const sortPosts = (sorting) => {
     return {
         type: SORT_POSTS,
+        sorting
+    }
+}
+
+export const sortComments = (sorting) => {
+    return {
+        type: SORT_COMMENTS,
         sorting
     }
 }

@@ -3,17 +3,8 @@ import '../App.css';
 import { Route, Switch } from 'react-router-dom'
 import CategoryRoute from './CategoryRoute'
 import Feed from './Feed'
-import { connect } from 'react-redux'
-import { sortPosts } from '../actions'
 
 class Main extends Component {
-
-    componentDidMount() {
-        this.props.sortPosts({
-            parameter: 'voteScore',
-            lowestFirst: false
-        })
-    }
 
     render() {
         return(
@@ -33,9 +24,5 @@ class Main extends Component {
     }
     
 }
-
-const mapDispatchToProps = dispatch => ({
-    sortPosts: (sorting) => dispatch(sortPosts(sorting))
-})
   
-export default connect(null, mapDispatchToProps, null, {pure:false})(Main);
+export default Main;

@@ -1,17 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { showPostDetails } from '../actions'
+import { showPostDetails, sortComments } from '../actions'
 import Post from './Post'
 import Comment from './Comment'
 import { Link } from 'react-router-dom'
 import { fetchComments } from '../actions'
-
-const comment = {
-    voteScore: 24,
-    body: 'Test body',
-    author: 'test',
-    timestamp: 1987283674
-}
+import '../styles/PostDetails.css'
+import { sort } from '../helpers'
 
 class PostDetails extends Component {
 
@@ -19,7 +14,54 @@ class PostDetails extends Component {
         const { id } = this.props.data
         this.props.showPostDetails(id)
         this.props.loadComments(id)
+        this.props.sortComments({
+            parameter: 'voteScore',
+            lowestFirst: false
+        })
+    }
 
+    componentWillUnmount() {
+        this.props.loadComments(null)
+    }
+
+    renderComments = () => {
+        const { comments } = this.props
+        if (comments) {
+          const commentsView = comments.map( comment => {
+      
+            if (comment.deleted) {
+              return null
+            }
+            
+            return (
+                <Comment key={comment.id} data={comment}/>
+            )
+          })
+      
+          if (commentsView.length < 1) {
+            return (<p id='no-comments'>No comments in this post.</p>)
+          }
+      
+          return commentsView
+        }
+    }
+
+    handleSort = (e) => {
+        
+        const value = e.target.value
+        const sorts = value.split('_')
+        
+        if (sorts[0] === 'highest') {
+            this.props.sortComments({
+                parameter: sorts[1],
+                lowestFirst: false
+            })
+        } else {
+            this.props.sortComments({
+                parameter: sorts[1],
+                lowestFirst: true
+            })
+        }  
     }
 
     render() {
@@ -33,9 +75,31 @@ class PostDetails extends Component {
                         /post
                     </div>
                 </div>
-                
-                <Post data={this.props.data} />
-                <Comment data={comment} />
+
+                <div>
+                    <Post data={this.props.data} editEnable={false} />
+                    <div className='comments-section'>
+                        <div className='comments-section-title'>
+                        <div><p>/comments</p></div>
+                        <div className='comments-sort'>
+                            <select onChange={(e) => this.handleSort(e)}>
+                                <option value='highest_voteScore' name='voteScore'>Sort by score (highest first)</option>
+                                <option value='lowest_voteScore' name='voteScore'>Sort by score (lowest first)</option>
+                                <option value='highest_timestamp' name='timestamp'>Sort by time (newest first)</option>
+                                <option value='lowest_timestamp' name='timestamp'>Sort by time (oldest first)</option>
+                            </select>
+                        </div>
+                        </div>
+                        <div>
+                        <button onClick={this.props.open}>NEW COMMENT</button>
+                        </div>
+                    </div>
+                    <div className='comments-feed'>
+                        {this.renderComments()}
+                    </div>
+                    
+                    
+                </div>
             </div>
         )
     }
@@ -44,6 +108,23 @@ class PostDetails extends Component {
 const mapDispatchToProps = dispatch => ({
     showPostDetails: (id) => dispatch(showPostDetails(id)),
     loadComments: (id) => dispatch(fetchComments(id)),
-  })
+    sortComments: (sorting) => dispatch(sortComments(sorting))
+})
 
-export default connect(null, mapDispatchToProps)(PostDetails)
+const mapStateToProps = (state, props) => {
+    const sorting = state.ui.commentsSorting
+    const commentsArray = Object.entries(state.comments).map( comment => comment[1])
+
+    if (sorting) {
+        const sorted = sort(commentsArray, sorting.parameter, sorting.lowestFirst)
+        
+        return {
+            comments: sorted
+        }
+    }
+
+    return{}
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostDetails)

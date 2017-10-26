@@ -79,7 +79,7 @@ class Post extends Component {
                             {`${author} • ${timeAgo(timestamp)} • ${commentCount} comments`}
                         </div>
                         
-                        
+                        {this.props.editEnable ? 
                         <div id='edit-delete-icons'>
                             <Edit id='edit' size={16} onClick={this.openModal}/>
                             <Delete id='delete' size={16} onClick={this.deletePost}/>
@@ -87,6 +87,9 @@ class Post extends Component {
                                 <CreateEdit close={this.closeModal} data={this.props.data} isEditing={true}/>
                             </Modal>
                         </div>
+                        :
+                        null}
+                        
                     </div>
                 </div>
             </div>
@@ -103,6 +106,10 @@ const mapDispatchToProps = dispatch => ({
     votePost: (vote, id) => dispatch(votePost(vote, id)),
     deletePost: (id) => dispatch(removePost(id)),
     showPostDetails: (id) => dispatch(showPostDetails(id)),
-  })
+})
+
+Post.defaultProps = {
+    editEnable: true
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post)

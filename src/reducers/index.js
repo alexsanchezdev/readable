@@ -4,11 +4,12 @@ import {
     LOAD_COMMENTS,
     UPDATE_SCORE,
     SORT_POSTS,
+    SORT_COMMENTS,
     FILTER_POSTS,
     CREATE_POST,
     DELETE_POST,
     EDIT_POST,
-    SHOW_POST_DETAILS
+    SHOW_POST_DETAILS,
 } from '../actions'
 import { combineReducers } from 'redux'
 
@@ -65,25 +66,11 @@ const posts = (state = {}, action) => {
 }
 
 const comments = (state = {}, action) => {
-    const { comments, id } = action
+    const { comments } = action
     
     switch (action.type) {
         case LOAD_COMMENTS:
-            if (id) {
-                if (Object.keys(state).length < 1) {
-                    return Object.assign(state, {
-                        [id]: comments
-                    })
-                } else {
-                    return {
-                        ...state,
-                        [id]: comments
-                    }
-                }
-            }
-            
-            return state
-            
+            return Object.assign(...state, comments)
         default:
             return state
     }
@@ -98,8 +85,12 @@ const ui = (state = {}, action) => {
                 ...state,
                 postSorting: sorting
             }
+        case SORT_COMMENTS:
+            return {
+                ...state,
+                commentsSorting: sorting
+            }
         case FILTER_POSTS:
-            console.log(state.posts)
             return {
                 ...state,
                 postFilter: filter

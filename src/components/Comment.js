@@ -43,21 +43,11 @@ class Comment extends Component {
     //     this.props.deletePost(this.props.data.id)
     // }
 
-    // showDetails = (id) => {
-    //     const { showDetails } = this.props
-
-    //     if (showDetails) {
-    //         return
-    //     } else {
-    //         this.props.showPostDetails(id)
-    //     }
-    // }
-
     render() {
 
-        const { id, voteScore, body, author, timestamp } = this.props.data
+        const { voteScore, body, author, timestamp } = this.props.data
+
         return(
-            
             <div className='comment-container'>
                 <div className='comment-vote-container'>
                     <button id='arrow-up' onClick={() => { this.votePost('upVote') }}><ArrowUp size={24} /></button>

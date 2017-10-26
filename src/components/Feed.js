@@ -4,10 +4,18 @@ import { connect } from 'react-redux'
 import Post from './Post'
 import { Route, Switch } from 'react-router-dom'
 import PostDetails from './PostDetails'
+import { sortPosts } from '../actions'
 
 
 class Feed extends Component {
 
+
+  componentDidMount(){
+    this.props.sortPosts({
+      parameter: 'voteScore',
+      lowestFirst: false
+    })
+  }
 
     render() {
         const { showDetails } = this.props
@@ -65,6 +73,10 @@ renderPosts = () => {
 
 }
 
+const mapDispatchToProps = dispatch => ({
+  sortPosts: (sorting) => dispatch(sortPosts(sorting))
+})
+
 const mapStateToProps = (state, props) => {
     
     const filter = state.ui.postFilter
@@ -97,4 +109,4 @@ const mapStateToProps = (state, props) => {
     // TODO: Ask instructor if there's another way to handle this
   }
 
-export default connect(mapStateToProps, null, null, {pure:false})(Feed);
+export default connect(mapStateToProps, mapDispatchToProps, null, {pure:false})(Feed);
