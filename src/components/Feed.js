@@ -34,41 +34,30 @@ class Feed extends Component {
 
 renderPostsRoutes = () => {
   const { posts } = this.props
-  if (posts) {
-    const postsViews = posts.map( post => {
 
-      if (post.deleted) {
-        return null
-      }
-      
+    const postsRoutes = posts.filter( post => post.deleted === false).map( post => {
       return (
-          <Route exact path={`/${post.category}/${post.id}`} key={post.id} render={()=> <PostDetails data={post}/>}/>
+        <Route exact path={`/${post.category}/${post.id}`} key={post.id} render={()=> <PostDetails data={post}/>}/>
       )
     })
-    return postsViews
-  }
+      
+    return postsRoutes
 }
 
 renderPosts = () => {
-  const { posts } = this.props
-  if (posts) {
-    const postsViews = posts.map( post => {
+    const { posts } = this.props
 
-      if (post.deleted) {
-        return null
-      }
-      
-      return (
-          <Post key={post.id} data={post}/>
-      )
+    const postsViews = posts.filter( post => post.deleted === false).map( post => {
+        return (
+            <Post key={post.id} data={post}/>
+        )
     })
 
     if (postsViews.length < 1) {
-      return (<p>No posts in this category.</p>)
+        return (<p>No posts in this category.</p>)
+    } else {
+        return postsViews
     }
-
-    return postsViews
-  }
 }
 
 }
@@ -108,5 +97,9 @@ const mapStateToProps = (state, props) => {
     return {}
     // TODO: Ask instructor if there's another way to handle this
   }
+
+Feed.defaultProps = {
+  posts: []
+}
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {pure:false})(Feed);

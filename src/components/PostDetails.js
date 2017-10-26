@@ -26,23 +26,17 @@ class PostDetails extends Component {
 
     renderComments = () => {
         const { comments } = this.props
-        if (comments) {
-          const commentsView = comments.map( comment => {
-      
-            if (comment.deleted) {
-              return null
-            }
-            
+
+        const commentsView = comments.filter( comment => comment.deleted === false).map( comment => {
             return (
                 <Comment key={comment.id} data={comment}/>
             )
-          })
-      
-          if (commentsView.length < 1) {
+        })
+
+        if (commentsView.length < 1) {
             return (<p id='no-comments'>No comments in this post.</p>)
-          }
-      
-          return commentsView
+        } else {
+            return commentsView
         }
     }
 
@@ -125,6 +119,10 @@ const mapStateToProps = (state, props) => {
 
     return{}
 
+}
+
+PostDetails.defaultProps = {
+    comments: []
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostDetails)
