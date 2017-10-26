@@ -8,6 +8,7 @@ import {
     FILTER_POSTS,
     CREATE_POST,
     DELETE_POST,
+    DELETE_COMMENT,
     EDIT_POST,
     SHOW_POST_DETAILS,
 } from '../actions'
@@ -66,11 +67,19 @@ const posts = (state = {}, action) => {
 }
 
 const comments = (state = {}, action) => {
-    const { comments } = action
+    const { comments, comment } = action
     
     switch (action.type) {
         case LOAD_COMMENTS:
             return Object.assign(...state, comments)
+        case DELETE_COMMENT:
+            return {
+                ...state,
+                [comment.id]: {
+                    ...state[comment.id],
+                    deleted: comment.deleted
+                }
+            }
         default:
             return state
     }

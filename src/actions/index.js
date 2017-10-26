@@ -9,6 +9,7 @@ export const SORT_COMMENTS = 'SORT_COMMENTS'
 export const FILTER_POSTS = 'FILTER_POSTS'
 export const CREATE_POST = 'CREATE_POST'
 export const DELETE_POST = 'DELETE_POST'
+export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const EDIT_POST = 'EDIT_POST'
 export const SHOW_POST_DETAILS = 'SHOW_POST_DETAILS'
 
@@ -76,6 +77,13 @@ export const deletePost = (post) => {
     }
 }
 
+export const deleteComment = (comment) => {
+    return {
+        type: DELETE_COMMENT,
+        comment
+    }
+}
+
 export const editPost = (post) => {
     return {
         type: EDIT_POST,
@@ -136,6 +144,12 @@ export const uploadPost = (post) => dispatch => {
 export const removePost = (id) => dispatch => {
     ReadableAPI.deletePost(id).then( res => {
         dispatch(deletePost(res))
+    })
+}
+
+export const removeComment = (id) => dispatch => {
+    ReadableAPI.deleteComment(id).then( res => {
+        dispatch(deleteComment(res))
     })
 }
 

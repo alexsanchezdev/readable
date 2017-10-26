@@ -6,7 +6,7 @@ import Edit from 'react-icons/lib/md/edit'
 import Delete from 'react-icons/lib/md/delete'
 import { timeAgo } from '../helpers'
 import { connect } from 'react-redux'
-import { votePost, removePost } from '../actions'
+import { votePost, removeComment } from '../actions'
 import CreateEdit from './CreateEdit'
 import Modal from 'react-modal'
 
@@ -39,9 +39,9 @@ class Comment extends Component {
     //     this.props.votePost(vote, this.props.data.id)
     // }
 
-    // deletePost = () => {
-    //     this.props.deletePost(this.props.data.id)
-    // }
+    deleteComment = () => {
+        this.props.deleteComment(this.props.data.id)
+    }
 
     render() {
 
@@ -65,7 +65,7 @@ class Comment extends Component {
                     <div className='comment-info'>
                         <div id='edit-delete-icons'>
                             <Edit id='edit' size={16} onClick={this.openModal}/>
-                            <Delete id='delete' size={16} onClick={this.deletePost}/>
+                            <Delete id='delete' size={16} onClick={this.deleteComment}/>
                             <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} style={customStyles}>
                                 <CreateEdit close={this.closeModal} data={this.props.data} isEditing={true}/>
                             </Modal>
@@ -80,7 +80,7 @@ class Comment extends Component {
 
 const mapDispatchToProps = dispatch => ({
     votePost: (vote, id) => dispatch(votePost(vote, id)),
-    deletePost: (id) => dispatch(removePost(id)),
+    deleteComment: (id) => dispatch(removeComment(id)),
   })
 
 export default connect(null, mapDispatchToProps)(Comment)
