@@ -7,8 +7,25 @@ import { Link } from 'react-router-dom'
 import { fetchComments } from '../actions'
 import '../styles/PostDetails.css'
 import { sort } from '../helpers'
+import Modal from 'react-modal'
+import CommentCreateEdit from './CommentCreateEdit'
+
+const customStyles = {
+    content : {
+      top                   : '50%',
+      left                  : '50%',
+      right                 : 'auto',
+      bottom                : 'auto',
+      marginRight           : '-50%',
+      transform             : 'translate(-50%, -50%)'
+    }
+}
 
 class PostDetails extends Component {
+
+    state = {
+        modalIsOpen: false
+    }
 
     componentDidMount() {
         const { id } = this.props.data
@@ -40,6 +57,14 @@ class PostDetails extends Component {
         }
     }
 
+    openModal = () => {
+        this.setState({ modalIsOpen: true })
+    }
+    
+    closeModal = () => {
+        this.setState({ modalIsOpen: false })
+    }
+
     handleSort = (e) => {
         
         const value = e.target.value
@@ -59,7 +84,7 @@ class PostDetails extends Component {
     }
 
     render() {
-        const { category } = this.props.data
+        const { category, id } = this.props.data
         return (
             <div>
                 <div className='nav-bar'>
@@ -85,14 +110,15 @@ class PostDetails extends Component {
                         </div>
                         </div>
                         <div>
-                        <button onClick={this.props.open}>NEW COMMENT</button>
+                        <button onClick={this.openModal}>NEW COMMENT</button>
                         </div>
                     </div>
                     <div className='comments-feed'>
                         {this.renderComments()}
                     </div>
-                    
-                    
+                    <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} style={customStyles}>
+                        <CommentCreateEdit close={this.closeModal} parent={id}/>
+                    </Modal>
                 </div>
             </div>
         )

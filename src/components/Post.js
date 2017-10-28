@@ -7,7 +7,7 @@ import Delete from 'react-icons/lib/md/delete'
 import { timeAgo } from '../helpers'
 import { connect } from 'react-redux'
 import { votePost, removePost, showPostDetails } from '../actions'
-import CreateEdit from './CreateEdit'
+import PostCreateEdit from './PostCreateEdit'
 import Modal from 'react-modal'
 import { Link } from 'react-router-dom'
 
@@ -84,7 +84,7 @@ class Post extends Component {
                             <Edit id='edit' size={16} onClick={this.openModal}/>
                             <Delete id='delete' size={16} onClick={this.deletePost}/>
                             <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} style={customStyles}>
-                                <CreateEdit close={this.closeModal} data={this.props.data} isEditing={true}/>
+                                <PostCreateEdit close={this.closeModal} data={this.props.data} isEditing={true}/>
                             </Modal>
                         </div>
                         :

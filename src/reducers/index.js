@@ -2,14 +2,17 @@ import {
     LOAD_CATEGORIES,
     LOAD_POSTS,
     LOAD_COMMENTS,
-    UPDATE_SCORE,
+    UPDATE_POST_SCORE,
+    UPDATE_COMMENT_SCORE,
     SORT_POSTS,
     SORT_COMMENTS,
     FILTER_POSTS,
     CREATE_POST,
+    CREATE_COMMENT,
     DELETE_POST,
     DELETE_COMMENT,
     EDIT_POST,
+    EDIT_COMMENT,
     SHOW_POST_DETAILS,
 } from '../actions'
 import { combineReducers } from 'redux'
@@ -32,7 +35,7 @@ const posts = (state = {}, action) => {
     switch (action.type) {
         case LOAD_POSTS:
             return Object.assign(...state, posts)
-        case UPDATE_SCORE:
+        case UPDATE_POST_SCORE:
             return {
                 ...state,
                 [post.id]: {
@@ -78,6 +81,27 @@ const comments = (state = {}, action) => {
                 [comment.id]: {
                     ...state[comment.id],
                     deleted: comment.deleted
+                }
+            }
+        case UPDATE_COMMENT_SCORE:
+            return {
+                ...state,
+                [comment.id]: {
+                    ...state[comment.id],
+                    voteScore: comment.voteScore
+                }
+            }
+        case EDIT_COMMENT:
+            return {
+                ...state,
+                [comment.id]: comment
+            }
+
+        case CREATE_COMMENT:
+            return {
+                ...state,
+                [comment.id]: {
+                    ...comment
                 }
             }
         default:

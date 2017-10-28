@@ -109,13 +109,12 @@ export const voteComment = (vote, id) => (
 )
 
 export const editComment = (id, comment) => (
-    fetch(`${url}/posts/${id}`, {
+    fetch(`${url}/comments/${id}`, {
         method: 'put',
         headers,
         body: JSON.stringify({
             ...comment,
-            timestamp: Date.now()
-        })
+            timestamp: Date.now()})
     }).then( res => res.json().then( json => json ))
 )
 

@@ -3,14 +3,17 @@ import * as ReadableAPI from '../ReadableAPI'
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES'
 export const LOAD_POSTS = 'LOAD_POSTS'
 export const LOAD_COMMENTS = 'LOAD_COMMENTS'
-export const UPDATE_SCORE = 'UPDATE_SCORE'
+export const UPDATE_POST_SCORE = 'UPDATE_POST_SCORE'
+export const UPDATE_COMMENT_SCORE = 'UPDATE_COMMENT_SCORE'
 export const SORT_POSTS = 'SORT_POSTS'
 export const SORT_COMMENTS = 'SORT_COMMENTS'
 export const FILTER_POSTS = 'FILTER_POSTS'
 export const CREATE_POST = 'CREATE_POST'
+export const CREATE_COMMENT = 'CREATE_COMMENT'
 export const DELETE_POST = 'DELETE_POST'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const EDIT_POST = 'EDIT_POST'
+export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const SHOW_POST_DETAILS = 'SHOW_POST_DETAILS'
 
 export const loadCategories = (categories) => {
@@ -35,10 +38,17 @@ export const loadComments = (id, comments) => {
     }
 }
 
-export const updateScore = (post) => {
+export const updatePostScore = (post) => {
     return {
-        type: UPDATE_SCORE,
+        type: UPDATE_POST_SCORE,
         post
+    }
+}
+
+export const updateCommentScore = (comment) => {
+    return {
+        type: UPDATE_COMMENT_SCORE,
+        comment
     }
 }
 
@@ -70,6 +80,13 @@ export const createPost = (post) => {
     }
 }
 
+export const createComment = (comment) => {
+    return {
+        type: CREATE_COMMENT,
+        comment
+    }
+}
+
 export const deletePost = (post) => {
     return {
         type: DELETE_POST,
@@ -88,6 +105,13 @@ export const editPost = (post) => {
     return {
         type: EDIT_POST,
         post
+    }
+}
+
+export const editComment = (comment) => {
+    return {
+        type: EDIT_COMMENT,
+        comment
     }
 }
 
@@ -131,7 +155,13 @@ export const fetchComments = (id) => dispatch => {
 
 export const votePost = (vote, id) => dispatch => {
     ReadableAPI.votePost(vote, id).then( res => {
-        dispatch(updateScore(res))
+        dispatch(updatePostScore(res))
+    })
+}
+
+export const voteComment = (vote, id) =>dispatch => {
+    ReadableAPI.voteComment(vote, id).then( res => {
+        dispatch(updateCommentScore(res))
     })
 }
 
@@ -139,6 +169,12 @@ export const uploadPost = (post) => dispatch => {
     ReadableAPI.createNewPost(post).then( res => {
         dispatch(createPost(res))
     }).then( () => dispatch(fetchPosts()))
+}
+
+export const uploadComment = (comment) => dispatch => {
+    ReadableAPI.createNewComment(comment).then( res => {
+        dispatch(createComment(res))
+    })
 }
 
 export const removePost = (id) => dispatch => {
@@ -157,4 +193,10 @@ export const updatePost = (id, post) => dispatch => {
     ReadableAPI.editPost(id, post).then( res => {
         dispatch(editPost(res))
     }).then( () => dispatch(fetchPosts()))
+}
+
+export const updateComment = (id, comment) => dispatch => {
+    ReadableAPI.editComment(id, comment).then( res => {
+        dispatch(editComment(res))
+    })
 }

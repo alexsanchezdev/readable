@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import '../styles/CreateEdit.css'
+import '../styles/PostCreateEdit.css'
 import { connect } from 'react-redux'
 import { uploadPost, updatePost } from '../actions'
 
-class CreateEdit extends Component {
+class PostCreateEdit extends Component {
 
     state = {
         title: this.props.data.title,
@@ -17,7 +17,7 @@ class CreateEdit extends Component {
         const { title, body, author, category, isEditing } = this.state
 
         if (isEditing) {
-            const id = this.props.data.id
+            const { id }= this.props.data
             this.props.editPost(id, {title, body})
             
         } else {
@@ -77,7 +77,7 @@ class CreateEdit extends Component {
     }
 }
 
-CreateEdit.defaultProps = {
+PostCreateEdit.defaultProps = {
     data: {
         title: '',
         body: '',
@@ -91,4 +91,4 @@ const mapDispatchToProps = dispatch => ({
     editPost: (id, post) => dispatch(updatePost(id, post))
 })
 
-export default connect(null, mapDispatchToProps)(CreateEdit)
+export default connect(null, mapDispatchToProps)(PostCreateEdit)

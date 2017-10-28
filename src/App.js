@@ -5,7 +5,7 @@ import Sidebar from './components/Sidebar'
 import { connect } from 'react-redux'
 import { fetchCategories, fetchPosts, fetchComments, sortPosts} from './actions'
 import Modal from 'react-modal'
-import CreateEdit from './components/CreateEdit'
+import PostCreateEdit from './components/PostCreateEdit'
 
 const customStyles = {
   content : {
@@ -41,7 +41,7 @@ class App extends Component {
             <Sidebar open={this.openModal}/>
           </div>
           <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} style={customStyles}>
-              <CreateEdit close={this.closeModal}/>
+              <PostCreateEdit close={this.closeModal}/>
           </Modal>
         </div>
       </div>
