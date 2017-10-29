@@ -21,7 +21,9 @@ class PostCreateEdit extends Component {
             this.props.editPost(id, {title, body})
             
         } else {
-            this.props.uploadPost({title, body, author, category}) 
+            if (title && body && author && category){
+                this.props.uploadPost({title, body, author, category}) 
+            }
         }
         
         e.preventDefault()

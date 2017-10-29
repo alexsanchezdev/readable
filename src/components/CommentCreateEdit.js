@@ -22,7 +22,10 @@ class PostCreateEdit extends Component {
             
         } else {
             const parentId = this.props.parent
-            this.props.uploadComment({ body, author, parentId}) 
+            if(body && author && parentId) {
+                this.props.uploadComment({ body, author, parentId}) 
+            }
+            
         }
         
         e.preventDefault()
