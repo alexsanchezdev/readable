@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import '../styles/CommentCreateEdit.css'
 import { connect } from 'react-redux'
-import { uploadComment, updateComment } from '../actions'
+import { uploadComment, updateComment } from '../actions/comments'
 
 class PostCreateEdit extends Component {
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { filterPosts, showPostDetails, sortPosts } from '../actions'
+import { filterPosts, showPostDetails, sortPosts } from '../actions/ui'
 
 class CategoryRoute extends Component {
 

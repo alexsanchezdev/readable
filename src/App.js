@@ -3,7 +3,10 @@ import './App.css';
 import Main from './components/Main'
 import Sidebar from './components/Sidebar'
 import { connect } from 'react-redux'
-import { fetchCategories, fetchPosts, fetchComments, sortPosts} from './actions'
+import { fetchComments,} from './actions/comments'
+import { sortPosts } from './actions/ui'
+import { fetchCategories } from './actions/categories'
+import { fetchPosts } from './actions/posts'
 import Modal from 'react-modal'
 import PostCreateEdit from './components/PostCreateEdit'
 

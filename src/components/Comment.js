@@ -6,7 +6,7 @@ import Edit from 'react-icons/lib/md/edit'
 import Delete from 'react-icons/lib/md/delete'
 import { timeAgo } from '../helpers'
 import { connect } from 'react-redux'
-import { voteComment, removeComment } from '../actions'
+import { voteComment, removeComment } from '../actions/comments'
 import CommentCreateEdit from './CommentCreateEdit'
 import Modal from 'react-modal'
 

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Post from './Post'
 import { Route, Switch } from 'react-router-dom'
 import PostDetails from './PostDetails'
-import { sortPosts } from '../actions'
+import { sortPosts } from '../actions/ui'
 
 
 class Feed extends Component {
