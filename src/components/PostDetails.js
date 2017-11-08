@@ -29,12 +29,18 @@ class PostDetails extends Component {
 
     componentDidMount() {
         const { id } = this.props.data
-        this.props.showPostDetails(id)
-        this.props.loadComments(id)
-        this.props.sortComments({
-            parameter: 'voteScore',
-            lowestFirst: false
-        })
+
+        if (id) {
+            this.props.showPostDetails(id)
+            this.props.loadComments(id)
+            this.props.sortComments({
+                parameter: 'voteScore',
+                lowestFirst: false
+            })
+        } else {
+            this.props.showPostDetails('notfound')
+        }
+        
     }
 
     componentWillUnmount() {
@@ -85,43 +91,53 @@ class PostDetails extends Component {
 
     render() {
         const { category, id } = this.props.data
-        return (
-            <div>
-                <div className='nav-bar'>
-                    <div>
-                        <Link to='/' className='link'>/all</Link>
-                        <Link to={`/${category}`} className='link'>/{category}</Link>
-                        /post
-                    </div>
-                </div>
 
+        if (id) {
+            return (
                 <div>
-                    <Post data={this.props.data} editEnable={false} />
-                    <div className='comments-section'>
-                        <div className='comments-section-title'>
-                        <div><p>/comments</p></div>
-                        <div className='comments-sort'>
-                            <select onChange={(e) => this.handleSort(e)}>
-                                <option value='highest_voteScore' name='voteScore'>Sort by score (highest first)</option>
-                                <option value='lowest_voteScore' name='voteScore'>Sort by score (lowest first)</option>
-                                <option value='highest_timestamp' name='timestamp'>Sort by time (newest first)</option>
-                                <option value='lowest_timestamp' name='timestamp'>Sort by time (oldest first)</option>
-                            </select>
-                        </div>
-                        </div>
+                    <div className='nav-bar'>
                         <div>
-                        <button onClick={this.openModal}>NEW COMMENT</button>
+                            <Link to='/' className='link'>/all</Link>
+                            <Link to={`/${category}`} className='link'>/{category}</Link>
+                            /post
                         </div>
                     </div>
-                    <div className='comments-feed'>
-                        {this.renderComments()}
+    
+                    <div>
+                        <Post data={this.props.data} editEnable={true} />
+                        <div className='comments-section'>
+                            <div className='comments-section-title'>
+                            <div><p>/comments</p></div>
+                            <div className='comments-sort'>
+                                <select onChange={(e) => this.handleSort(e)}>
+                                    <option value='highest_voteScore' name='voteScore'>Sort by score (highest first)</option>
+                                    <option value='lowest_voteScore' name='voteScore'>Sort by score (lowest first)</option>
+                                    <option value='highest_timestamp' name='timestamp'>Sort by time (newest first)</option>
+                                    <option value='lowest_timestamp' name='timestamp'>Sort by time (oldest first)</option>
+                                </select>
+                            </div>
+                            </div>
+                            <div>
+                            <button onClick={this.openModal}>NEW COMMENT</button>
+                            </div>
+                        </div>
+                        <div className='comments-feed'>
+                            {this.renderComments()}
+                        </div>
+                        <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} style={customStyles}>
+                            <CommentCreateEdit close={this.closeModal} parent={id}/>
+                        </Modal>
                     </div>
-                    <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} style={customStyles}>
-                        <CommentCreateEdit close={this.closeModal} parent={id}/>
-                    </Modal>
                 </div>
-            </div>
-        )
+            )
+        } else {
+            return  (
+                <div>
+                    <h2>Welcome to 404!</h2>
+                    <p>The post you are looking for doesn't exist or has been deleted.</p>
+                </div>
+            ) 
+        }
     }
 }
 

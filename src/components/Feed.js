@@ -26,6 +26,7 @@ class Feed extends Component {
             <div>
             <Switch>
               {this.renderPostsRoutes()}
+              <Route path='/*/*' render={() => <PostDetails data={{}}/>}/>
             </Switch>
             </div>
           </div>
